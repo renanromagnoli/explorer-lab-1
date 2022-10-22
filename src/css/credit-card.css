@@ -17,6 +17,10 @@
   align-items: center;
 }
 
+.cc-logo span:nth-child(2) img {
+  width: 50px;
+}
+
 .cc-info {
   display: grid;
   gap: 1.4rem;
