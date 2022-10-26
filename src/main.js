@@ -63,4 +63,10 @@ const expirationDateMask = {
   },
 }
 
-globalThis.setCard = setCard
+const nameInput = document.querySelector("#card-holder")
+nameInput.addEventListener("input", () => {
+  const nameField = document.querySelector(".cc-holder .value")
+  nameField.innerText = nameInput.value.length
+    ? nameInput.value
+    : "Fulano de Tal"
+})
