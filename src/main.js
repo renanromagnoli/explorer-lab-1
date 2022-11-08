@@ -1,24 +1,9 @@
 import "./css/index.css"
 import IMask from "imask"
-
-function setCard(flag) {
-  const bgColor1 = document.querySelector(".cc-bg svg > g g:nth-child(1) path")
-  const bgColor2 = document.querySelector(".cc-bg svg > g g:nth-child(2) path")
-  const logo = document.querySelector(".cc-logo span:nth-child(2) img")
-
-  const colors = {
-    visa: ["blue", "lightblue"],
-    mastercard: ["orange", "lightorange"],
-    default: ["gray", "lightgray"],
-  }
-
-  bgColor1.setAttribute("fill", colors[flag][0])
-  bgColor2.setAttribute("fill", colors[flag][1])
-  logo.setAttribute("src", `${flag}.svg`)
-}
+import { setCard } from "./select-card"
 
 const cardNumber = document.querySelector("input#card-number")
-const maskCardNumber = {
+const cardNumberMask = {
   mask: [
     {
       mask: "0000 0000 0000 0000",
@@ -44,7 +29,18 @@ const maskCardNumber = {
   },
 }
 
-const cardNumberMask = IMask(cardNumber, maskCardNumber)
+const maskingCardNumber = IMask(cardNumber, cardNumberMask)
+
+maskingCardNumber.on("accept", () => {
+  const cardType = maskingCardNumber.masked.currentMask.cardtype
+  setCard(cardType)
+  updateCardNumber(cardNumberMask.value)
+})
+
+function updateCardNumber(number) {
+  const ccNumber = document.querySelector(".cc-number")
+  ccNumber.innerText = number.length === 0 ? "1234 4567 8901 2345" : number
+}
 
 const expirationDate = document.querySelector("#expiration-date")
 const expirationDateMask = {
@@ -63,10 +59,25 @@ const expirationDateMask = {
   },
 }
 
+const securityCodeInput = document.querySelector("#security-code")
+const securityCodeInputMask = {
+  mask: "000",
+}
+const securityCodeInputMasked = IMask(securityCodeInput, securityCodeInputMask)
+
+function updateSecurityCodeNumberLabel(code) {
+  const SecurityCodeNumberlabel = document.querySelector(".cc-security .value")
+  SecurityCodeNumberlabel.innerText = code.length ? code : "123"
+}
+
+securityCodeInputMasked.on("accept", () => {
+  updateSecurityCodeNumberLabel(securityCodeInputMasked.value)
+})
+
 const nameInput = document.querySelector("#card-holder")
 nameInput.addEventListener("input", () => {
-  const nameField = document.querySelector(".cc-holder .value")
-  nameField.innerText = nameInput.value.length
+  const nameLabel = document.querySelector(".cc-holder .value")
+  nameLabel.innerText = nameInput.value.length
     ? nameInput.value
     : "Fulano de Tal"
 })
