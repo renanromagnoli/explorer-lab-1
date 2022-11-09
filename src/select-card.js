@@ -12,4 +12,6 @@ export function setCard(flag) {
   bgColor1.setAttribute("fill", colors[flag][0])
   bgColor2.setAttribute("fill", colors[flag][1])
   logo.setAttribute("src", `${flag}.svg`)
+
+  console.log(`Cartão ${flag}`)
 }
