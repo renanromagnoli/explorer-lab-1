@@ -42,8 +42,8 @@ function updateCardNumber(number) {
   ccNumber.innerText = number.length === 0 ? "1234 4567 8901 2345" : number
 }
 
-const expirationDate = document.querySelector("#expiration-date")
-const expirationDateMask = {
+const expirationDateInput = document.querySelector("#expiration-date")
+const expirationDateInputMask = {
   mask: "MM{/}YY",
   blocks: {
     MM: {
@@ -59,6 +59,20 @@ const expirationDateMask = {
   },
 }
 
+const expirationDateInputMasked = IMask(
+  expirationDateInput,
+  expirationDateInputMask
+)
+
+expirationDateInputMasked.on("accept", () =>
+  updateExpirationDateLabel(expirationDateInputMasked.value)
+)
+
+function updateExpirationDateLabel(input) {
+  const expirationDateLabel = document.querySelector(".cc-expiration .value")
+  expirationDateLabel.innerText = input.length ? input : "12/34"
+}
+
 const securityCodeInput = document.querySelector("#security-code")
 const securityCodeInputMask = {
   mask: "000",
@@ -66,8 +80,8 @@ const securityCodeInputMask = {
 const securityCodeInputMasked = IMask(securityCodeInput, securityCodeInputMask)
 
 function updateSecurityCodeNumberLabel(code) {
-  const SecurityCodeNumberlabel = document.querySelector(".cc-security .value")
-  SecurityCodeNumberlabel.innerText = code.length ? code : "123"
+  const SecurityCodeNumberLabel = document.querySelector(".cc-security .value")
+  SecurityCodeNumberLabel.innerText = code.length ? code : "123"
 }
 
 securityCodeInputMasked.on("accept", () => {
